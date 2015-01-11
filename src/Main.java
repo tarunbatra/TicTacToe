@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
  * You may obtain a copy of the License at
  *
  *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ *X
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,19 +29,28 @@ public class Main {
         System.out.println("*** Tic Tac Toe ***\n\nChoose X or O\n");
         String choice =br.readLine();
         tictactoe game=new tictactoe();
-        game.player(choice);
-        game.print();
+        game.player(choice);        //player chooses X or O
+        while(game.player==-1)      //if choice is invalid
+        {
+            choice=br.readLine();
+            game.player(choice);
+        }
+        game.print();               //initial print of the game
         System.out.println("Your turn first.");
-        int status=-1;
+        int status=-1;              //while nobody has won yet
         while(status==-1)
         {
-            game.human();
-            game.print();
-            game.com();
-            game.print();
-            status=game.check();
+            game.human();           //player's turn
+            game.print();           //print game instance
+            status=game.check();    //check game status
+            if(status==-1)          //if nobody has one
+            {
+                game.com();         //computer's turn
+                game.print();       //print game status
+                status=game.check();//check game status
+            }
         }
-        if(status==0)
+        if(status==0)               //O wins
         {
             if(game.player==0)
             {
@@ -52,7 +61,7 @@ public class Main {
                 System.out.println("Pity you! I won.");
             }
         }
-        else if(status==1)
+        else if(status==1)          //X wins
         {
             if(game.player==1)
             {
@@ -62,6 +71,10 @@ public class Main {
             {
                 System.out.println("Pity you! I won.");
             }
+        }
+        else if(status==3)          // Draw
+        {
+            System.out.println("That's a draw!");
         }
     }
 }
