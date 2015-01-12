@@ -207,55 +207,14 @@ public class tictactoe {
         {
             mult=-1;
         }
-        System.out.println("mult="+mult);
-        //row
-        op=0;
-        for(int i=0;i<n;i++)
-        {
-            halfsum=mult*(backend[i][0]+backend[i][1]+backend[i][2]);
-            if(halfsum==n-1)
-            {
-                System.out.println("halfsum="+halfsum+"\twin called with op="+op);
-                move(op,i);
-                return;
-            }
-            else if(halfsum==1-n)
-            {
-                System.out.println("halfsum="+halfsum+"\tblock called with op="+op);
-                move(op,i);
-                return;
-            }
-        }
-        //column
-        op=1;
-        for(int i=0;i<n;i++)
-        {
-            halfsum=mult*(backend[0][i]+backend[1][i]+backend[2][i]);
-            if(halfsum==n-1)
-            {
-                System.out.println("halfsum="+halfsum+"\twin called with op="+op);
-                move(op,i);
-                return;
-            }
-            else if(halfsum==1-n)
-            {
-                System.out.println("halfsum="+halfsum+"\tblock called with op="+op);
-                move(op,i);
-                return;
-            }
-        }
+        //System.out.println("mult="+mult);
+        //win
         //diagonally\
         op=2;
         halfsum=mult*(backend[0][0]+backend[1][1]+backend[2][2]);
         if(halfsum==n-1)
         {
             System.out.println("halfsum="+halfsum+"\twin called with op="+op);
-            move(op,0);
-            return;
-        }
-        else if(halfsum==1-n)
-        {
-            System.out.println("halfsum="+halfsum+"\tblock called with op="+op);
             move(op,0);
             return;
         }
@@ -268,12 +227,70 @@ public class tictactoe {
             move(op,0);
             return;
         }
-        else if(halfsum==1-n)
+        for(int i=0;i<n;i++)
         {
-            System.out.println("halfsum="+halfsum+"\tblock called with op="+op);
+            //row
+            op=0;
+            halfsum=mult*(backend[i][0]+backend[i][1]+backend[i][2]);
+            if(halfsum==1-n)
+            {
+                System.out.println("halfsum="+halfsum+"\tblock called with op="+op);
+                move(op,i);
+                return;
+            }
+            
+            //column
+            op=1;
+            halfsum=mult*(backend[0][i]+backend[1][i]+backend[2][i]);
+            if(halfsum==1-n)
+            {
+                System.out.println("halfsum="+halfsum+"\twin called with op="+op);
+                move(op,i);
+                return;
+            }
+        }
+        //block
+        //diagonally\
+        op=2;
+        halfsum=mult*(backend[0][0]+backend[1][1]+backend[2][2]);
+        if(halfsum==1-n)
+        {
+            System.out.println("halfsum="+halfsum+"\twin called with op="+op);
             move(op,0);
             return;
         }
+        //diagonally/
+        op=3;
+        halfsum=mult*(backend[0][2]+backend[1][1]+backend[2][0]);
+        if(halfsum==1-n)
+        {
+            System.out.println("halfsum="+halfsum+"\twin called with op="+op);
+            move(op,0);
+            return;
+        }
+        for(int i=0;i<n;i++)
+        {
+            //row
+            op=0;
+            halfsum=mult*(backend[i][0]+backend[i][1]+backend[i][2]);
+            if(halfsum==1-n)
+            {
+                System.out.println("halfsum="+halfsum+"\twin called with op="+op);
+                move(op,i);
+                return;
+            }
+            
+            //column
+            op=1;
+            halfsum=mult*(backend[0][i]+backend[1][i]+backend[2][i]);
+            if(halfsum==1-n)
+            {
+                System.out.println("halfsum="+halfsum+"\twin called with op="+op);
+                move(op,i);
+                return;
+            }
+        }
+        
         random();
     }
     
