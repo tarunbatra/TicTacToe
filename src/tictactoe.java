@@ -66,7 +66,7 @@ public class tictactoe {
             int row=scan.nextInt();
             System.out.println("Enter the column");
             int column=scan.nextInt();
-            while(backend[row][column]!=0 || row>n || column>n)
+            while(row>n || column>n|| backend[row][column]!=0)
             {
                 System.out.println("Invalid selection! Try again.");
                 System.out.println("Enter the row");
