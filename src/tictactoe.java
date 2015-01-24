@@ -24,7 +24,7 @@ import java.util.Random;
  * @author tbking
  */
 public class tictactoe {
-    int player,computer,status=-1,rr=0,rc=0,n=3,turn=0;
+    int player,computer,status=-1,rr=0,rc=0,n=3,turn=0,row,column,check=0;
     String[][] matrix = new String[n][n];
     Random randomGenerator = new Random();
     Scanner scan = new Scanner(System.in);
@@ -58,22 +58,56 @@ public class tictactoe {
                 
         }
     }
+    public void input()
+    {
+        System.out.println("Enter the box number.");
+            int box=scan.nextInt();
+            switch(box)
+            {
+                case 1:
+                    row=0;column=0;
+                    break;
+                case 2:
+                    row=0;column=1;
+                    break;
+                case 3:
+                    row=0;column=2;
+                    break;
+                case 4:
+                    row=1;column=0;
+                    break;
+                case 5:
+                    row=1;column=1;
+                    break;
+                case 6:
+                    row=1;column=2;
+                    break;
+                case 7:
+                    row=2;column=0;
+                    break;
+                case 8:
+                    row=2;column=1;
+                    break;
+                case 9:
+                    row=2;column=2;
+                    break;
+                default:
+                    System.out.println("Invalid selection!");
+                    input();
+            }
+            while(backend[row][column]!=0)
+            {
+                System.out.println(backend[row][column]);
+                System.out.println("Invalid selection! Try again.");
+                input();
+            }
+    }
     public void human() throws IOException
     {
        if(turn<n*n)
        {
-            System.out.println("Enter the row");
-            int row=scan.nextInt();
-            System.out.println("Enter the column");
-            int column=scan.nextInt();
-            while(row>n || column>n|| backend[row][column]!=0)
-            {
-                System.out.println("Invalid selection! Try again.");
-                System.out.println("Enter the row");
-                row=scan.nextInt();
-                System.out.println("Enter the column");
-                column=scan.nextInt();
-            }
+           input();
+            
             if(player==1)
             {
                 matrix[row][column]="X";
@@ -89,7 +123,9 @@ public class tictactoe {
     }
     public void print()
     {
-        if(turn<=n*n)
+        if(turn ==0)
+            System.out.println("-------------\n| 1 | 2 | 3 |\n-------------\n| 4 | 5 | 6 |\n-------------\n| 7 | 8 | 9 |\n-------------");  
+        else if(turn<=n*n)
         {
             System.out.println("-------------");
             System.out.printf("| %s | %s | %s |\n",matrix[0][0],matrix[0][1],matrix[0][2]);
@@ -106,7 +142,7 @@ public class tictactoe {
     }
     public int check()
     {
-        int sum=0;
+        int sum;
             //row
             for(int i=0;i<n;i++)
             {
@@ -161,7 +197,13 @@ public class tictactoe {
                     status=1;
                     return status;
                 }
-                status=-1;
+                if(turn ==n*n)
+                {
+                    status=3;
+                }
+                else{
+                    status=-1;
+                }
             return status;
     }
     
@@ -187,111 +229,91 @@ public class tictactoe {
     }
     void random()
     {
-        rr= randomGenerator.nextInt(n);
-        rc = randomGenerator.nextInt(n);
-        while(backend[rr][rc]!=0)
+        if(backend[1][1]==0)
         {
-            rr= randomGenerator.nextInt(n);
-            rc = randomGenerator.nextInt(n); 
-        }
-        
-    }
-    void intel()
-    {
-        int mult,halfsum,op;
-        if(computer==0)
-        {
-            mult=1;
+            rr=1;
+            rc=1;
         }
         else
         {
+            rr= randomGenerator.nextInt(n);
+            rc = randomGenerator.nextInt(n);
+            if(backend[rr][rc]!=0)
+            {
+                random();
+            }
+            System.out.println("row"+Math.abs(rr-row));
+            System.out.println("col"+Math.abs(rc-column));
+            if(!(Math.abs(rr-row)<2) && (Math.abs(rc-column)<2 ) && check<5)
+            {
+                random();
+                check++;
+            }
+        }
+    }
+    void intel()
+    {
+        int mult;
+        if(computer==0)
+        {
             mult=-1;
         }
-        //System.out.println("mult="+mult);
-        //win
+        else
+        {
+            mult=1;
+        }
+        if(look(mult,n-1)!=1)
+        {
+            if(look(mult,1-n)!=1)
+            {
+                random();
+            }
+        }
+    }
+    int look(int mult, int hs)
+    {
+        int halfsum,op;
         //diagonally\
         op=2;
         halfsum=mult*(backend[0][0]+backend[1][1]+backend[2][2]);
-        if(halfsum==n-1)
+        if(halfsum==hs)
         {
             //System.out.println("halfsum="+halfsum+"\twin called with op="+op);
             move(op,0);
-            return;
+            return 1;
         }
         //diagonally/
         op=3;
         halfsum=mult*(backend[0][2]+backend[1][1]+backend[2][0]);
-        if(halfsum==n-1)
+        if(halfsum==hs)
         {
             //System.out.println("halfsum="+halfsum+"\twin called with op="+op);
             move(op,0);
-            return;
+            return 1;
         }
         for(int i=0;i<n;i++)
         {
             //row
             op=0;
             halfsum=mult*(backend[i][0]+backend[i][1]+backend[i][2]);
-            if(halfsum==1-n)
+            if(halfsum==hs)
             {
-                //System.out.println("halfsum="+halfsum+"\tblock called with op="+op);
+                //System.out.println("halfsum="+halfsum+"\twin called with op="+op);
                 move(op,i);
-                return;
+                return 1;
             }
             
             //column
             op=1;
             halfsum=mult*(backend[0][i]+backend[1][i]+backend[2][i]);
-            if(halfsum==1-n)
+            if(halfsum==hs)
             {
                 //System.out.println("halfsum="+halfsum+"\twin called with op="+op);
                 move(op,i);
-                return;
+                return 1;
             }
         }
-        //block
-        //diagonally\
-        op=2;
-        halfsum=mult*(backend[0][0]+backend[1][1]+backend[2][2]);
-        if(halfsum==1-n)
-        {
-            //System.out.println("halfsum="+halfsum+"\twin called with op="+op);
-            move(op,0);
-            return;
-        }
-        //diagonally/
-        op=3;
-        halfsum=mult*(backend[0][2]+backend[1][1]+backend[2][0]);
-        if(halfsum==1-n)
-        {
-            //System.out.println("halfsum="+halfsum+"\twin called with op="+op);
-            move(op,0);
-            return;
-        }
-        for(int i=0;i<n;i++)
-        {
-            //row
-            op=0;
-            halfsum=mult*(backend[i][0]+backend[i][1]+backend[i][2]);
-            if(halfsum==1-n)
-            {
-                //System.out.println("halfsum="+halfsum+"\twin called with op="+op);
-                move(op,i);
-                return;
-            }
-            
-            //column
-            op=1;
-            halfsum=mult*(backend[0][i]+backend[1][i]+backend[2][i]);
-            if(halfsum==1-n)
-            {
-                //System.out.println("halfsum="+halfsum+"\twin called with op="+op);
-                move(op,i);
-                return;
-            }
-        }
-        
-        random();
+        return 0;
     }
     
     void move(int op, int i)
