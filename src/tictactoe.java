@@ -242,9 +242,9 @@ public class tictactoe {
             {
                 random();
             }
-            System.out.println("row"+Math.abs(rr-row));
-            System.out.println("col"+Math.abs(rc-column));
-            if(!(Math.abs(rr-row)<2) && (Math.abs(rc-column)<2 ) && check<5)
+            //System.out.println("row"+Math.abs(rr-row));
+            //1System.out.println("col"+Math.abs(rc-column));
+            if(!(Math.abs(rr-row)<2) && (Math.abs(rc-column)<2 ) && check<10)
             {
                 random();
                 check++;
