@@ -123,6 +123,7 @@ public class tictactoe {
     }
     public void print()
     {
+        //System.out.println(turn);
         if(turn ==0)
             System.out.println("-------------\n| 1 | 2 | 3 |\n-------------\n| 4 | 5 | 6 |\n-------------\n| 7 | 8 | 9 |\n-------------");  
         else if(turn<=n*n)
@@ -227,19 +228,54 @@ public class tictactoe {
             turn++;
         }
     }
-    void random()
+    
+    void otherMove()
     {
-        if(backend[1][1]==0)
+        if(backend[0][0]==0&&backend[0][2]==0&&backend[2][0]==0&&backend[2][2]==0) //all corners empty
+        {//corner
+            rr=0;
+            rc=0;
+            //System.out.println("1");
+        }
+        else if(backend[0][0]==1||backend[0][2]==1||backend[2][0]==1||backend[2][2]==1)
         {
-            rr=1;
-            rc=1;
+            if(backend[1][1]==0)
+            {
+                rr=1;
+                rc=1;
+                //System.out.println("2");
+            }
+            else if(turn==3)
+            {
+                //System.out.println("3");
+               random();
+               while((rr==0&&rc==0) || (rr==0&&rc==2) || (rr==2&&rc==0) || (rr==2&&rc==2))
+               {
+                   random();
+                   // System.out.println("4");
+               }
+            }
+            else{
+            //System.out.println("4.5");
+                random();
+            }
         }
         else
         {
+            //System.out.println("5");
+            random();
+        }
+            
+    }
+    void random()
+    {
+        
+        
             rr= randomGenerator.nextInt(n);
             rc = randomGenerator.nextInt(n);
             if(backend[rr][rc]!=0)
             {
+               // System.out.println("6");
                 random();
             }
             //System.out.println("row"+Math.abs(rr-row));
@@ -249,7 +285,6 @@ public class tictactoe {
                 random();
                 check++;
             }
-        }
     }
     void intel()
     {
@@ -266,7 +301,7 @@ public class tictactoe {
         {
             if(look(mult,1-n)!=1)
             {
-                random();
+                otherMove();
             }
         }
     }

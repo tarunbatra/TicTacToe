@@ -36,7 +36,13 @@ public class Main {
             game.player(choice);
         }
         game.print();               //initial print of the game
-        System.out.println("Your turn first.");
+        System.out.println("Do you want to go first? Y/N ");
+        String first =br.readLine();
+        if(first.equalsIgnoreCase("n"))
+        {
+            game.com();
+            game.print();
+        }
         int status=-1;              //while nobody has won yet
         while(status==-1)
         {
