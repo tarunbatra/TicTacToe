@@ -35,9 +35,9 @@ public class Main {
             choice=br.readLine();
             game.player(choice);
         }
-        game.print();               //initial print of the game
         System.out.println("Do you want to go first? Y/N ");
         String first =br.readLine();
+        game.print();               //initial print of the game
         if(first.equalsIgnoreCase("n"))
         {
             game.com();
